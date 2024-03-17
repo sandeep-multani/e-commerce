@@ -1,7 +1,5 @@
 
-using Asp.Versioning;
-using ECommerce.ProductService.Api.Services;
-using ProductServiceClass = ECommerce.ProductService.Api.Services.ProductService;
+using ECommerce.ProductService.Api.Extensions;
 
 namespace ECommerce.ProductService.Api;
 
@@ -12,21 +10,11 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
-        builder.Services.AddApiVersioning(options =>
-        {
-            options.DefaultApiVersion = new ApiVersion(1, 0);
-            options.AssumeDefaultVersionWhenUnspecified = true;
-            options.ReportApiVersions = true;
-        })
-        .AddApiExplorer(options =>
-        {
-            options.GroupNameFormat = "'v'VVV";
-            options.SubstituteApiVersionInUrl = true;
-        });
-        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddApiVersioning();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddSingleton<IProductService, ProductServiceClass>();
+        builder.Services.AddMongoDb(builder.Configuration);
+        builder.Services.AddApplicationServices();
 
         var app = builder.Build();
         if (app.Environment.IsDevelopment())
