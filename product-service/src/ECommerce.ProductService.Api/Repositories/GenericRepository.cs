@@ -2,19 +2,19 @@ using System.Linq.Expressions;
 using Ardalis.GuardClauses;
 using ECommerce.ProductService.Api.Attributes;
 using ECommerce.ProductService.Api.Configurations;
-using ECommerce.ProductService.Api.Documents;
+using ECommerce.ProductService.Api.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ECommerce.ProductService.Api.Repositories;
 
-public class Repository<TDocument> : IRepository<TDocument>
-    where TDocument : IDocument
+public class Repository<TEntity> : IRepository<TEntity>
+    where TEntity : IEntity
 {
-    private readonly ILogger<Repository<TDocument>> _logger;
-    private readonly IMongoCollection<TDocument> _collection;
+    private readonly ILogger<Repository<TEntity>> _logger;
+    private readonly IMongoCollection<TEntity> _collection;
 
-    public Repository(ILogger<Repository<TDocument>> logger, MongoDbConfiguration configuration)
+    public Repository(ILogger<Repository<TEntity>> logger, MongoDbConfiguration configuration)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
         Guard.Against.Null(configuration, nameof(configuration));
@@ -24,7 +24,7 @@ public class Repository<TDocument> : IRepository<TDocument>
                             .WithReadPreference(ReadPreference.SecondaryPreferred)
                             .WithWriteConcern(WriteConcern.WMajority);
 
-        _collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
+        _collection = database.GetCollection<TEntity>(GetCollectionName(typeof(TEntity)));
     }
 
     private protected string GetCollectionName(Type documentType)
@@ -33,17 +33,17 @@ public class Repository<TDocument> : IRepository<TDocument>
                 ?? documentType.Name.ToLower();
     }
 
-    public virtual IQueryable<TDocument> AsQueryable()
+    public virtual IQueryable<TEntity> AsQueryable()
     {
         return _collection.AsQueryable();
     }
 
-    public virtual IEnumerable<TDocument> FilterBy(Expression<Func<TDocument, bool>> filterExpression)
+    public virtual IEnumerable<TEntity> FilterBy(Expression<Func<TEntity, bool>> filterExpression)
     {
         return _collection.Find(filterExpression).ToEnumerable();
     }
 
-    public virtual IEnumerable<TProjected> FilterBy<TProjected>(Expression<Func<TDocument, bool>> filterExpression, Expression<Func<TDocument, TProjected>> projectionExpression)
+    public virtual IEnumerable<TProjected> FilterBy<TProjected>(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TProjected>> projectionExpression)
     {
         return _collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
     }
@@ -53,52 +53,52 @@ public class Repository<TDocument> : IRepository<TDocument>
         return Task.Run(() =>
         {
             var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
             _collection.FindOneAndDeleteAsync(filter);
         });
     }
 
-    public virtual Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
+    public virtual Task DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression)
     {
         return Task.Run(() => _collection.DeleteManyAsync(filterExpression));
     }
 
-    public virtual Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression)
+    public virtual Task DeleteOneAsync(Expression<Func<TEntity, bool>> filterExpression)
     {
         return Task.Run(() => _collection.FindOneAndDeleteAsync(filterExpression));
     }
 
-    public virtual Task<TDocument> FindByIdAsync(string id)
+    public virtual Task<TEntity> FindByIdAsync(string id)
     {
         return Task.Run(() =>
        {
            var objectId = new ObjectId(id);
-           var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+           var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
            return _collection.Find(filter).SingleOrDefaultAsync();
        });
     }
 
-    public virtual Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
+    public virtual Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression)
     {
         return Task.Run(() => _collection.Find(filterExpression).FirstOrDefaultAsync());
     }
 
-    public virtual Task InsertManyAsync(ICollection<TDocument> documents)
+    public virtual Task InsertManyAsync(ICollection<TEntity> documents)
     {
         return Task.Run(() => _collection.InsertManyAsync(documents));
 
     }
 
-    public virtual Task InsertOneAsync(TDocument document)
+    public virtual Task InsertOneAsync(TEntity document)
     {
         return Task.Run(() => _collection.InsertOneAsync(document)); ;
     }
 
-    public virtual Task ReplaceOneAsync(TDocument document)
+    public virtual Task ReplaceOneAsync(TEntity document)
     {
         return Task.Run(() =>
         {
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, document.Id);
             return _collection.FindOneAndReplaceAsync(filter, document);
         });
     }

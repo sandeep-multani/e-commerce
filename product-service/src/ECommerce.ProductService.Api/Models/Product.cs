@@ -1,16 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-using Ardalis.GuardClauses;
-
 namespace ECommerce.ProductService.Api.Models;
 
 public class Product
 {
-    public Guid Id { get; set; }
+    public string? Id { get; set; }
 
-    [Required]
     public string? Name { get; set; }
 
-    [Required]
     public string? Description { get; set; }
 
     public decimal Price { get; set; }
@@ -26,14 +21,4 @@ public class Product
     public int RestockThreshold { get; set; }
 
     public int MaxStockThreshold { get; set; }
-
-    public static Product Create(string name, string description)
-    {
-        return new Product
-        {
-            Id = Guid.NewGuid(),
-            Name = Guard.Against.NullOrWhiteSpace(name, nameof(name)),
-            Description = Guard.Against.NullOrWhiteSpace(description, nameof(description))
-        };
-    }
 }

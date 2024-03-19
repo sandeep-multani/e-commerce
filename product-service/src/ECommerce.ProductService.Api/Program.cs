@@ -10,11 +10,14 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
-        builder.Services.AddApiVersioning();
+        builder.Services.ConfigureApiVersioning();
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddMongoDb(builder.Configuration);
-        builder.Services.AddApplicationServices();
+        builder.Services
+            .AddApplicationServices()
+            .AddRepositories()
+            .AddMappers();
 
         var app = builder.Build();
         if (app.Environment.IsDevelopment())

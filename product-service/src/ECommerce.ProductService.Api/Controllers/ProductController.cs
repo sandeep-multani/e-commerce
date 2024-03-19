@@ -23,12 +23,12 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
         _logger.LogInformation("Getting products");
-        return await _productService.GetProductsAsync();
+        return Ok(await _productService.GetProductsAsync());
     }
 
     // GET: api/v1/product/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(Guid id)
+    public async Task<ActionResult<Product>> GetProduct(string id)
     {
         var product = await _productService.GetProductAsync(id);
 

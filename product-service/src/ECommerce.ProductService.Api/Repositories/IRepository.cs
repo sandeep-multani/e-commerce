@@ -1,32 +1,32 @@
 using System.Linq.Expressions;
-using ECommerce.ProductService.Api.Documents;
+using ECommerce.ProductService.Api.Entities;
 
 namespace ECommerce.ProductService.Api.Repositories;
 
-public interface IRepository<TDocument> where TDocument : IDocument
+public interface IRepository<TEntity> where TEntity : IEntity
 {
-    IQueryable<TDocument> AsQueryable();
+    IQueryable<TEntity> AsQueryable();
 
-    IEnumerable<TDocument> FilterBy(
-        Expression<Func<TDocument, bool>> filterExpression);
+    IEnumerable<TEntity> FilterBy(
+        Expression<Func<TEntity, bool>> filterExpression);
 
     IEnumerable<TProjected> FilterBy<TProjected>(
-        Expression<Func<TDocument, bool>> filterExpression,
-        Expression<Func<TDocument, TProjected>> projectionExpression);
+        Expression<Func<TEntity, bool>> filterExpression,
+        Expression<Func<TEntity, TProjected>> projectionExpression);
 
-    Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression);
+    Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression);
 
-    Task<TDocument> FindByIdAsync(string id);
+    Task<TEntity> FindByIdAsync(string id);
 
-    Task InsertOneAsync(TDocument document);
+    Task InsertOneAsync(TEntity document);
 
-    Task InsertManyAsync(ICollection<TDocument> documents);
+    Task InsertManyAsync(ICollection<TEntity> documents);
 
-    Task ReplaceOneAsync(TDocument document);
+    Task ReplaceOneAsync(TEntity document);
 
-    Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression);
+    Task DeleteOneAsync(Expression<Func<TEntity, bool>> filterExpression);
 
     Task DeleteByIdAsync(string id);
 
-    Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression);
+    Task DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression);
 }

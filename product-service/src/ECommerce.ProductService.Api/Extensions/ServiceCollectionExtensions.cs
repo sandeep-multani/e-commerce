@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using ECommerce.ProductService.Api.Configurations;
+using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Repositories;
 using ECommerce.ProductService.Api.Services;
 using Microsoft.Extensions.Options;
@@ -18,11 +19,21 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services){
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        return services.AddSingleton<IProductService, ProductServiceClass>();
+        services.AddScoped<IProductService, ProductServiceClass>();
+        return services;
     }
 
-    private static IServiceCollection AddApiVersioning(this IServiceCollection services)
+     public static IServiceCollection AddRepositories(this IServiceCollection services){
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        return services;
+    }
+
+    public static IServiceCollection AddMappers(this IServiceCollection services){
+        services.AddSingleton<IProductMapper, ProductMapper>();
+        return services;
+    }
+
+    public static IServiceCollection ConfigureApiVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>
         {

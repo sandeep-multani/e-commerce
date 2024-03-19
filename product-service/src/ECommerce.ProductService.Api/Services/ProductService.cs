@@ -1,5 +1,7 @@
+using System.Collections.Immutable;
 using Ardalis.GuardClauses;
-using ECommerce.ProductService.Api.Documents;
+using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Models;
 using ECommerce.ProductService.Api.Repositories;
 
@@ -8,37 +10,28 @@ namespace ECommerce.ProductService.Api.Services;
 public class ProductService : IProductService
 { 
     private readonly ILogger<ProductService> _logger;
-    private readonly IRepository<ProductDocument> _productRepository;
+    private readonly IRepository<ProductEntity> _repository;
+    private readonly IProductMapper _mapper;
 
-    public ProductService(ILogger<ProductService> logger, IRepository<ProductDocument> productRepository)
+    public ProductService(
+        ILogger<ProductService> logger, 
+        IRepository<ProductEntity> repository,
+        IProductMapper mapper)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
-        _productRepository = Guard.Against.Null(productRepository, nameof(productRepository));
+        _repository = Guard.Against.Null(repository, nameof(repository));
+        _mapper = Guard.Against.Null(mapper, nameof(mapper));
     }
 
-    public Task<Product> CreateProductAsync(Product product)
+    public async Task<Product?> GetProductAsync(string id)
     {
-        _products.Add(product);
+        var product = await _repository.FindByIdAsync(id);
+        return _mapper.Map(product);
     }
 
-    public Task DeleteProductAsync(Guid id)
+    public async Task<IEnumerable<Product>> GetProductsAsync()
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Product?> GetProductAsync(Guid id)
-    {
-        var product = _products.Where(x => x.Id == id).FirstOrDefault();
-        return await Task.FromResult(product);
-    }
-
-    public async Task<List<Product>> GetProductsAsync()
-    {
-        return await Task.FromResult(_products);
-    }
-
-    public Task<Product> UpdateProductAsync(Product product)
-    {
-        throw new NotImplementedException();
+        var products = _repository.AsQueryable().ToList().Select(_mapper.ModelProjection);
+        return await Task.FromResult(products);
     }
 }
