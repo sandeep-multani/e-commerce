@@ -20,7 +20,7 @@ public abstract partial class ProductCommandValidatorBase<T> : AbstractValidator
     protected void ValidateNameIsUniqueOnCreate()
     {
         RuleFor(productBaseCommand => productBaseCommand.Name)
-            .MustAsync(async (name, cancellationToken) => await _repository.FindOneAsync(f => f.Name == name) is not null)
+            .MustAsync(async (name, cancellationToken) => await _repository.FindOneAsync(p => p.Name == name) is null)
             .WithSeverity(Severity.Error)
             .WithMessage("A product with this name already exists.");
     }
