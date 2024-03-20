@@ -15,9 +15,10 @@ public class Program
 
         builder.Services.AddMongoDb(builder.Configuration);
         builder.Services
-            .AddApplicationServices()
-            .AddRepositories()
-            .AddMappers();
+            .AddValidators()
+            .AddCommandHandlers()
+            .AddQueries()
+            .AddRepositories();
 
         var app = builder.Build();
         if (app.Environment.IsDevelopment())

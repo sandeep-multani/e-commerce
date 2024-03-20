@@ -1,10 +1,13 @@
 using Asp.Versioning;
+using ECommerce.ProductService.Api.CommandHandlers;
+using ECommerce.ProductService.Api.CommandHandlers.Products;
+using ECommerce.ProductService.Api.Commands.Products;
 using ECommerce.ProductService.Api.Configurations;
-using ECommerce.ProductService.Api.Mappers;
+using ECommerce.ProductService.Api.Queries.Products;
 using ECommerce.ProductService.Api.Repositories;
-using ECommerce.ProductService.Api.Services;
+using FluentValidation;
 using Microsoft.Extensions.Options;
-using ProductServiceClass = ECommerce.ProductService.Api.Services.ProductService;
+using ECommerce.ProductService.Api.Commands.Products.Validators;
 
 namespace ECommerce.ProductService.Api.Extensions;
 
@@ -18,18 +21,27 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services){
-        services.AddScoped<IProductService, ProductServiceClass>();
+    public static IServiceCollection AddCommandHandlers(this IServiceCollection services)
+    {
+        services.AddScoped<ICommandHandler<CreateProductCommand>, CreateProductCommandHandler>(); ;
         return services;
     }
 
-     public static IServiceCollection AddRepositories(this IServiceCollection services){
+    public static IServiceCollection AddQueries(this IServiceCollection services)
+    {
+        services.AddScoped<IProductQueries, ProductQueries>();
+        return services;
+    }
+
+    public static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddScoped<IValidator<CreateProductCommand>, CreateProductCommandValidator>();
+        return services;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        return services;
-    }
-
-    public static IServiceCollection AddMappers(this IServiceCollection services){
-        services.AddSingleton<IProductMapper, ProductMapper>();
         return services;
     }
 

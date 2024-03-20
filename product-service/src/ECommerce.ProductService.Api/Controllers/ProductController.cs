@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using ECommerce.ProductService.Api.Services;
 using ECommerce.ProductService.Api.Models;
 using Ardalis.GuardClauses;
+using ECommerce.ProductService.Api.Queries.Products;
+using ECommerce.ProductService.Api.CommandHandlers;
+using ECommerce.ProductService.Api.Commands.Products;
 
 namespace ECommerce.ProductService.Api.Controllers;
 
@@ -10,33 +12,49 @@ namespace ECommerce.ProductService.Api.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
-    private readonly IProductService _productService;
+    private readonly IProductQueries _queries;
+    private readonly ICommandHandler<CreateProductCommand> _createProductCommandHandler;
 
-    public ProductController(ILogger<ProductController> logger, IProductService productService)
+    public ProductController(ILogger<ProductController> logger,
+    IProductQueries queries,
+    ICommandHandler<CreateProductCommand> createProductCommandHandler)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
-        _productService = Guard.Against.Null(productService, nameof(productService));
+        _queries = Guard.Against.Null(queries, nameof(queries));
+        _createProductCommandHandler = Guard.Against.Null(createProductCommandHandler, nameof(createProductCommandHandler));
     }
 
     // GET: api/v1/product
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<IActionResult> GetProducts()
     {
         _logger.LogInformation("Getting products");
-        return Ok(await _productService.GetProductsAsync());
+        return Ok(await _queries.GetAllAsync());
     }
 
     // GET: api/v1/product/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(string id)
+    public async Task<IActionResult> GetProduct(string id)
     {
-        var product = await _productService.GetProductAsync(id);
+        var product = await _queries.GetByIdAsync(id);
 
         if (product == null)
         {
             return NotFound();
         }
 
-        return product;
+        return Ok(product);
+    }
+
+    // POST: api/v1/product
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct(CreateProductCommand command)
+    {
+        _logger.LogInformation("Creating product");
+        var result = await _createProductCommandHandler.Handle(command);
+        if (result.Success)
+            return Ok(command);
+
+        return BadRequest(result.Errors);
     }
 }

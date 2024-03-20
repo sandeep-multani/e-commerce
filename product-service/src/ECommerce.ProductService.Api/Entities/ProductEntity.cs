@@ -7,13 +7,13 @@ namespace ECommerce.ProductService.Api.Entities;
 public class ProductEntity : Entity
 {
     [BsonElement("sku")]
-    public string? Sku { get; set; }
+    public string Sku { get; set; } = default!;
 
     [BsonElement("name")]
-    public string? Name { get; set; }
+    public string Name { get; set; } = default!;
 
     [BsonElement("description")]
-    public string? Description { get; set; }
+    public string Description { get; set; } = default!;
 
     [BsonElement("price")]
     public decimal Price { get; set; }

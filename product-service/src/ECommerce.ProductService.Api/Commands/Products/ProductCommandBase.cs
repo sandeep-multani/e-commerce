@@ -1,11 +1,9 @@
-namespace ECommerce.ProductService.Api.Models;
+namespace ECommerce.ProductService.Api.Commands.Products;
 
-public class Product
+public abstract class ProductCommandBase : CommandBase
 {
-    public string Id { get; set; } = default!;
-
     public string Sku { get; set; } = default!;
-
+    
     public string Name { get; set; } = default!;
 
     public string Description { get; set; } = default!;
@@ -14,9 +12,9 @@ public class Product
 
     public string? PictureUri { get; set; }
 
-    public ProductType? ProductType { get; set; }
+    public string? ProductType { get; set; }
 
-    public ProductBrand? ProductBrand { get; set; }
+    public string? ProductBrand { get; set; }
 
     public int QuantityInStock { get; set; }
 
