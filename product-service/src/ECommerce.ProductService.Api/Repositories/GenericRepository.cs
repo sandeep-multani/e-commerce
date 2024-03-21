@@ -48,12 +48,11 @@ public class Repository<TEntity> : IRepository<TEntity>
         return _collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
     }
 
-    public virtual Task DeleteByIdAsync(string id)
+    public virtual Task DeleteByIdAsync(ObjectId id)
     {
         return Task.Run(() =>
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
+            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, id);
             _collection.FindOneAndDeleteAsync(filter);
         });
     }
@@ -68,12 +67,11 @@ public class Repository<TEntity> : IRepository<TEntity>
         return Task.Run(() => _collection.FindOneAndDeleteAsync(filterExpression));
     }
 
-    public virtual Task<TEntity> FindByIdAsync(string id)
+    public virtual Task<TEntity> FindByIdAsync(ObjectId id)
     {
         return Task.Run(() =>
        {
-           var objectId = new ObjectId(id);
-           var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
+           var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, id);
            return _collection.Find(filter).SingleOrDefaultAsync();
        });
     }

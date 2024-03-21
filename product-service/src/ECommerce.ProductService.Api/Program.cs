@@ -1,5 +1,7 @@
 
+using ECommerce.ProductService.Api.Exceptions;
 using ECommerce.ProductService.Api.Extensions;
+using Hellang.Middleware.ProblemDetails;
 
 namespace ECommerce.ProductService.Api;
 
@@ -12,6 +14,15 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.ConfigureApiVersioning();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddProblemDetails(opts =>
+        {
+            opts.IncludeExceptionDetails = (context, ex) =>
+            {
+                var environment = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
+                return environment.IsDevelopment();
+            };
+        });
 
         builder.Services.AddMongoDb(builder.Configuration);
         builder.Services
@@ -27,6 +38,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseProblemDetails();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

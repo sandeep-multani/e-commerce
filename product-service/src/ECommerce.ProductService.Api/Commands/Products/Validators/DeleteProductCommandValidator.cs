@@ -1,5 +1,6 @@
 using Ardalis.GuardClauses;
 using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Repositories;
 using FluentValidation;
 
@@ -19,7 +20,7 @@ public class DeleteProductCommandValidator : AbstractValidator<DeleteProductComm
     private void ValidateExists()
     {
         RuleFor(productBaseCommand => productBaseCommand.Id)
-        .MustAsync(async (id, cancellationToken) => await _repository.FindByIdAsync(id) != null)
+        .MustAsync(async (id, cancellationToken) => await _repository.FindByIdAsync(ObjectIdMapper.ToObjectId(id)) != null)
             .WithSeverity(Severity.Error)
             .WithMessage(x => $"Product with id '{x.Id}' does not exists");
     }

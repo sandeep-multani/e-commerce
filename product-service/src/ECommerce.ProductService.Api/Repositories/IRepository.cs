@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using ECommerce.ProductService.Api.Entities;
+using MongoDB.Bson;
 
 namespace ECommerce.ProductService.Api.Repositories;
 
@@ -16,7 +17,7 @@ public interface IRepository<TEntity> where TEntity : IEntity
 
     Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression);
 
-    Task<TEntity> FindByIdAsync(string id);
+    Task<TEntity> FindByIdAsync(ObjectId id);
 
     Task InsertOneAsync(TEntity document);
 
@@ -26,7 +27,7 @@ public interface IRepository<TEntity> where TEntity : IEntity
 
     Task DeleteOneAsync(Expression<Func<TEntity, bool>> filterExpression);
 
-    Task DeleteByIdAsync(string id);
+    Task DeleteByIdAsync(ObjectId id);
 
     Task DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression);
 }

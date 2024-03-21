@@ -1,10 +1,14 @@
 using ECommerce.ProductService.Api.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ECommerce.ProductService.Api.Entities;
 
 [BsonCollection("brands")]
 public class BrandEntity : Entity
 {
-    public string? Brand { get; set; }
-    public string? Name { get; set; }
+    [BsonElement("brandCode")]
+    public string BrandCode { get; set; } = default!;
+
+    [BsonElement("name")]
+    public string Name { get; set; } = default!;
 }

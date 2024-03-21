@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using AutoMapper;
 using ECommerce.ProductService.Api.Entities;
 using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Models;
@@ -21,7 +22,7 @@ public class ProductQueries : IProductQueries
 
     public async Task<Product?> GetByIdAsync(string id)
     {
-        var product = await _repository.FindByIdAsync(id);
+        var product = await _repository.FindByIdAsync(ObjectIdMapper.ToObjectId(id));
         return ProductMapper.EntityToModel(product);
     }
 

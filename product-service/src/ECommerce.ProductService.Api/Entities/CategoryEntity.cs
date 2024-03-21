@@ -1,10 +1,14 @@
 using ECommerce.ProductService.Api.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ECommerce.ProductService.Api.Entities;
 
 [BsonCollection("categories")]
 public class CategoryEntity : Entity
 {
-    public string? Category { get; set; }
-    public string? Name { get; set; }
+    [BsonElement("categoryCode")]
+    public string CategoryCode { get; set; } = default!;
+
+    [BsonElement("name")]
+    public string Name { get; set; } = default!;
 }

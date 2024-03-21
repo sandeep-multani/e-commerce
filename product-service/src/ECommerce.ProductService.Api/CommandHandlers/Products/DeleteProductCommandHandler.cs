@@ -1,6 +1,7 @@
 using Ardalis.GuardClauses;
 using ECommerce.ProductService.Api.Commands.Products;
 using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Repositories;
 using FluentValidation;
 
@@ -25,7 +26,7 @@ public class DeleteProductCommandHandler : CommandHandlerBase, ICommandHandler<D
 
         if (validationResult.IsValid)
         {
-            await _repository.DeleteByIdAsync(command.Id);
+            await _repository.DeleteByIdAsync(ObjectIdMapper.ToObjectId(command.Id));
         }
 
         return Return();
