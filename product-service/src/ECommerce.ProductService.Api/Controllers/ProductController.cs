@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ECommerce.ProductService.Api.Models;
 using Ardalis.GuardClauses;
 using ECommerce.ProductService.Api.Queries.Products;
 using ECommerce.ProductService.Api.CommandHandlers;

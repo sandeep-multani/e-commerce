@@ -1,5 +1,4 @@
 using Ardalis.GuardClauses;
-using AutoMapper;
 using ECommerce.ProductService.Api.Entities;
 using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Models;
