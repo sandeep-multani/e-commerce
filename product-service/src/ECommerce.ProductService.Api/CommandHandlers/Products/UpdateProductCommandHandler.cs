@@ -7,28 +7,27 @@ using FluentValidation;
 
 namespace ECommerce.ProductService.Api.CommandHandlers.Products;
 
-public class CreateProductCommandHandler : CommandHandlerBase, ICommandHandler<CreateProductCommand>
+public class UpdateProductCommandHandler : CommandHandlerBase, ICommandHandler<UpdateProductCommand>
 {
-    private readonly IValidator<CreateProductCommand> _commandValidaor;
+    private readonly IValidator<UpdateProductCommand> _commandValidaor;
     private readonly IRepository<ProductEntity> _repository;
 
-    public CreateProductCommandHandler(
-        IValidator<CreateProductCommand> commandValidaor,
+    public UpdateProductCommandHandler(
+        IValidator<UpdateProductCommand> commandValidaor,
         IRepository<ProductEntity> repository)
     {
         _commandValidaor = Guard.Against.Null(commandValidaor, nameof(commandValidaor));
         _repository = Guard.Against.Null(repository, nameof(repository));
     }
 
-    public async Task<CommandResult> HandleAsync(CreateProductCommand command)
+    public async Task<CommandResult> HandleAsync(UpdateProductCommand command)
     {
         var validationResult = await ValidateAsync(command, _commandValidaor);
 
         if (validationResult.IsValid)
         {
             var product = ProductMapper.CommandToEntity(command);
-            await _repository.InsertOneAsync(product);
-            return Return(product.Id.ToString());
+            await _repository.ReplaceOneAsync(product);
         }
 
         return Return();

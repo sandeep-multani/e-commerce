@@ -24,6 +24,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCommandHandlers(this IServiceCollection services)
     {
         services.AddScoped<ICommandHandler<CreateProductCommand>, CreateProductCommandHandler>(); ;
+        services.AddScoped<ICommandHandler<UpdateProductCommand>, UpdateProductCommandHandler>(); ;
+        services.AddScoped<ICommandHandler<DeleteProductCommand>, DeleteProductCommandHandler>(); ;
         return services;
     }
 
@@ -36,6 +38,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddScoped<IValidator<CreateProductCommand>, CreateProductCommandValidator>();
+        services.AddScoped<IValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
+        services.AddScoped<IValidator<DeleteProductCommand>, DeleteProductCommandValidator>();
         return services;
     }
 

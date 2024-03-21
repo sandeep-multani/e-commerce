@@ -15,14 +15,24 @@ public abstract partial class ProductCommandValidatorBase<T> : AbstractValidator
         ValidateName();
         ValidateDescription();
         ValidateSku();
+        ValidateNameIsUnique();
+        ValidateSkuIsUnique();
     }
 
-    protected void ValidateNameIsUniqueOnCreate()
+    protected void ValidateNameIsUnique()
     {
         RuleFor(productBaseCommand => productBaseCommand.Name)
             .MustAsync(async (name, cancellationToken) => await _repository.FindOneAsync(p => p.Name == name) is null)
             .WithSeverity(Severity.Error)
-            .WithMessage("A product with this name already exists.");
+            .WithMessage(x => $"A product with name '{x.Name}' already exists");
+    }
+
+    protected void ValidateSkuIsUnique()
+    {
+        RuleFor(productBaseCommand => productBaseCommand.Sku)
+            .MustAsync(async (sku, cancellationToken) => await _repository.FindOneAsync(p => p.Sku == sku) is null)
+            .WithSeverity(Severity.Error)
+            .WithMessage(x => $"A product with SKU '{x.Sku}' already exists");
     }
 
     private void ValidateName()
@@ -30,13 +40,13 @@ public abstract partial class ProductCommandValidatorBase<T> : AbstractValidator
         RuleFor(productBaseCommand => productBaseCommand.Name)
             .Must(name => !string.IsNullOrWhiteSpace(name))
             .WithSeverity(Severity.Error)
-            .WithMessage("Product name can't be empty");
+            .WithMessage(x => $"Product name can't be empty");
     }
 
     private void ValidateDescription()
     {
         RuleFor(productBaseCommand => productBaseCommand.Description)
-            .Must(desc => !Guid.Empty.Equals(desc))
+            .Must(desc => !string.IsNullOrWhiteSpace(desc))
             .WithSeverity(Severity.Error)
             .WithMessage("Product description can't be empty");
     }
@@ -44,7 +54,7 @@ public abstract partial class ProductCommandValidatorBase<T> : AbstractValidator
     private void ValidateSku()
     {
         RuleFor(productBaseCommand => productBaseCommand.Sku)
-            .Must(sku => !Guid.Empty.Equals(sku))
+            .Must(sku => !string.IsNullOrWhiteSpace(sku))
             .WithSeverity(Severity.Error)
             .WithMessage("Product SKU can't be empty");
     }

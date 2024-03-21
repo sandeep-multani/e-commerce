@@ -8,7 +8,7 @@ public abstract class CommandHandlerBase
 {
     protected IEnumerable<string> Notifications = default!;
 
-    protected async Task<ValidationResult> Validate<T, TValidator>(
+    protected async Task<ValidationResult> ValidateAsync<T, TValidator>(
         T command,
         TValidator validator)
         where T : CommandBase
@@ -21,4 +21,5 @@ public abstract class CommandHandlerBase
     }
 
     public CommandResult Return() => new CommandResult(!Notifications.Any(), Notifications);
+    public CommandResult Return(string resourceId) => new CommandResult(!Notifications.Any(), Notifications, resourceId);
 }

@@ -8,6 +8,5 @@ public class CreateProductCommandValidator : ProductCommandValidatorBase<CreateP
     public CreateProductCommandValidator(IRepository<ProductEntity> repository)
         : base(repository)
     {
-        ValidateNameIsUniqueOnCreate();
     }
 }
