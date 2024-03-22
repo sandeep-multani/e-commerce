@@ -76,7 +76,7 @@ public class BrandController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateBrand(UpdateBrandCommand command)
     {
-        _logger.LogInformation("Creating brand");
+        _logger.LogInformation("Updating brand");
         var result = await _updateBrandCommandHandler.HandleAsync(command);
         if (result.Success)
             return Ok();

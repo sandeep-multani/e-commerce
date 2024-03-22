@@ -76,7 +76,7 @@ public class CategoryController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateCategory(UpdateCategoryCommand command)
     {
-        _logger.LogInformation("Creating category");
+        _logger.LogInformation("Updating category");
         var result = await _updateCategoryCommandHandler.HandleAsync(command);
         if (result.Success)
             return Ok();

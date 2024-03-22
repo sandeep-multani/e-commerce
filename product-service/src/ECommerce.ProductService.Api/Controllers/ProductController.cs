@@ -76,7 +76,7 @@ public class ProductController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateProduct(UpdateProductCommand command)
     {
-        _logger.LogInformation("Creating product");
+        _logger.LogInformation("Updating product");
         var result = await _updateProductCommandHandler.HandleAsync(command);
         if (result.Success)
             return Ok();
