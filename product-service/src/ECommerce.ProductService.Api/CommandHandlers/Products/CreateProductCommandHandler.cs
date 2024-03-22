@@ -1,6 +1,6 @@
 using Ardalis.GuardClauses;
 using ECommerce.ProductService.Api.Commands.Products;
-using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Entities.Products;
 using ECommerce.ProductService.Api.Mappers;
 using ECommerce.ProductService.Api.Repositories;
 using FluentValidation;

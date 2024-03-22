@@ -1,6 +1,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ECommerce.ProductService.Api.Entities;
+namespace ECommerce.ProductService.Api.Entities.Attributes;
 
 public class AttributeValue
 {

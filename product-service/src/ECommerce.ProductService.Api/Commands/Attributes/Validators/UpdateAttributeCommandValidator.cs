@@ -1,4 +1,4 @@
-using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Entities.Attributes;
 using ECommerce.ProductService.Api.Repositories;
 using FluentValidation;
 

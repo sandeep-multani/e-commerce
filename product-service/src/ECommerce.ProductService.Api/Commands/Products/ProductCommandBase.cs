@@ -12,13 +12,13 @@ public abstract class ProductCommandBase : CommandBase
 
     public string? PictureUri { get; set; }
 
-    public string? ProductType { get; set; }
-
-    public string? ProductBrand { get; set; }
-
     public int QuantityInStock { get; set; }
 
     public int RestockThreshold { get; set; }
 
     public int MaxStockThreshold { get; set; }
+
+    public string? ProductType { get; set; }
+
+    public string? ProductBrand { get; set; }
 }

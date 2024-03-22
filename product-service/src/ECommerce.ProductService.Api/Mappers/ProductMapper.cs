@@ -1,6 +1,6 @@
 using AutoMapper;
 using ECommerce.ProductService.Api.Commands.Products;
-using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Entities.Products;
 using ECommerce.ProductService.Api.Models;
 
 namespace ECommerce.ProductService.Api.Mappers;

@@ -1,7 +1,7 @@
 using ECommerce.ProductService.Api.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ECommerce.ProductService.Api.Entities;
+namespace ECommerce.ProductService.Api.Entities.Attributes;
 
 [BsonCollection("attributes")]
 public class AttributeEntity : Entity

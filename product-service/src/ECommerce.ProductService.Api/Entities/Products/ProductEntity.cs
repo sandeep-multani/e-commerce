@@ -1,7 +1,7 @@
 using ECommerce.ProductService.Api.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ECommerce.ProductService.Api.Entities;
+namespace ECommerce.ProductService.Api.Entities.Products;
 
 [BsonCollection("products")]
 public class ProductEntity : Entity
@@ -31,11 +31,11 @@ public class ProductEntity : Entity
     public int MaxStockThreshold { get; set; }
 
     [BsonElement("category")]
-    public string? Category { get; set; }
+    public ProductCategory Category { get; set; } = default!;
 
     [BsonElement("brand")]
-    public string? Brand { get; set; }
+    public ProductBrand Brand { get; set; } = default!;
 
     [BsonElement("attributes")]
-    public IDictionary<string, string>? Attributes { get; set; }
+    public ProductAttribute[] Attributes { get; set; } = default!;
 }

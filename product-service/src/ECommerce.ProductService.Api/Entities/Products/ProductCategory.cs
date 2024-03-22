@@ -1,10 +1,8 @@
-using ECommerce.ProductService.Api.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ECommerce.ProductService.Api.Entities;
+namespace ECommerce.ProductService.Api.Entities.Products;
 
-[BsonCollection("categories")]
-public class CategoryEntity : Entity
+public class ProductCategory
 {
     [BsonElement("categoryCode")]
     public string CategoryCode { get; set; } = default!;

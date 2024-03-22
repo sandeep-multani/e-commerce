@@ -1,4 +1,4 @@
-using ECommerce.ProductService.Api.Entities;
+using ECommerce.ProductService.Api.Entities.Categories;
 using ECommerce.ProductService.Api.Repositories;
 
 namespace ECommerce.ProductService.Api.Commands.Categories.Validators;
