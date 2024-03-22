@@ -26,9 +26,9 @@ public class CreateAttributeCommandHandler : CommandHandlerBase, ICommandHandler
 
         if (validationResult.IsValid)
         {
-            var Attribute = AttributeMapper.CommandToEntity(command);
-            await _repository.InsertOneAsync(Attribute);
-            return Return(Attribute.Id.ToString());
+            var attribute = AttributeMapper.CommandToEntity(command);
+            await _repository.InsertOneAsync(attribute);
+            return Return(attribute.Id.ToString());
         }
 
         return Return();

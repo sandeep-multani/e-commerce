@@ -26,8 +26,8 @@ public class UpdateAttributeCommandHandler : CommandHandlerBase, ICommandHandler
 
         if (validationResult.IsValid)
         {
-            var Attribute = AttributeMapper.CommandToEntity(command);
-            await _repository.ReplaceOneAsync(Attribute);
+            var attribute = AttributeMapper.CommandToEntity(command);
+            await _repository.ReplaceOneAsync(attribute);
         }
 
         return Return();

@@ -7,28 +7,27 @@ using FluentValidation;
 
 namespace ECommerce.ProductService.Api.CommandHandlers.Categories;
 
-public class CreateCategoryCommandHandler : CommandHandlerBase, ICommandHandler<CreateCategoryCommand>
+public class UpdateCategoryCommandHandler : CommandHandlerBase, ICommandHandler<UpdateCategoryCommand>
 {
-    private readonly IValidator<CreateCategoryCommand> _commandValidaor;
+    private readonly IValidator<UpdateCategoryCommand> _commandValidaor;
     private readonly IRepository<CategoryEntity> _repository;
 
-    public CreateCategoryCommandHandler(
-        IValidator<CreateCategoryCommand> commandValidaor,
+    public UpdateCategoryCommandHandler(
+        IValidator<UpdateCategoryCommand> commandValidaor,
         IRepository<CategoryEntity> repository)
     {
         _commandValidaor = Guard.Against.Null(commandValidaor, nameof(commandValidaor));
         _repository = Guard.Against.Null(repository, nameof(repository));
     }
 
-    public async Task<CommandResult> HandleAsync(CreateCategoryCommand command)
+    public async Task<CommandResult> HandleAsync(UpdateCategoryCommand command)
     {
         var validationResult = await ValidateAsync(command, _commandValidaor);
 
         if (validationResult.IsValid)
         {
-            var Category = CategoryMapper.CommandToEntity(command);
-            await _repository.InsertOneAsync(Category);
-            return Return(Category.Id.ToString());
+            var category = CategoryMapper.CommandToEntity(command);
+            await _repository.ReplaceOneAsync(category);
         }
 
         return Return();
