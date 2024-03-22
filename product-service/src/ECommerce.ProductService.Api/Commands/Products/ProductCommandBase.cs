@@ -18,7 +18,9 @@ public abstract class ProductCommandBase : CommandBase
 
     public int MaxStockThreshold { get; set; }
 
-    public string? ProductType { get; set; }
+    public string? CategoryCode { get; set; }
 
-    public string? ProductBrand { get; set; }
+    public string? BrandCode { get; set; }
+
+    public (string AttributeCode, string AttributeValueCode)[] Attributes { get; set; } = default!;
 }
